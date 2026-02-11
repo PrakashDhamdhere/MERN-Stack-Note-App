@@ -11,7 +11,7 @@ const Login = () => {
 
   function submitHandler(e){
     e.preventDefault();
-    axios.post(`http://localhost:3000/api/auth/login`, {
+    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/auth/login`, {
       email,
       password
     }).then((res)=>{

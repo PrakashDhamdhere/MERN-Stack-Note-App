@@ -12,7 +12,7 @@ const Register = () => {
 
   function submitHandler(e){
     e.preventDefault()
-    axios.post(`http://localhost:3000/api/auth/register`, {
+    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/auth/register`, {
       username,
       email,
       password

@@ -13,7 +13,7 @@ const Home = () => {
   console.log("HEllo")
 
   function fetchNotes(){
-    axios.get(`http://localhost:3000/api/notes`)
+    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`)
     .then((res)=>{
       setNotes(res.data.notes);
     })
@@ -22,7 +22,7 @@ const Home = () => {
   function handleSubmin(e){
     e.preventDefault();
     
-    axios.post(`http://localhost:3000/api/notes`, {
+    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/notes`, {
       title,
       description
     }).then((res)=>{
@@ -36,7 +36,7 @@ const Home = () => {
   function handleDelete(id){
     let check = confirm("Are you sure you want to delete this note?");
     if(check){
-      axios.delete(`http://localhost:3000/api/notes/${id}`).then((res)=>{
+      axios.delete(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
         console.log(res.data.message);
         fetchNotes();
       })
@@ -44,7 +44,7 @@ const Home = () => {
   }
 
   function handleEdit(id){
-    axios.get(`http://localhost:3000/api/notes/${id}`).then((res)=>{
+    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
       const note = res.data.note;
       setTitle(note.title);
       setDescription(note.description);
@@ -53,7 +53,7 @@ const Home = () => {
     })
   }
   function handleUpdate(){
-    axios.patch(`http://localhost:3000/api/notes/${updateNoteID}`, {
+    axios.patch(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${updateNoteID}`, {
       title,
       description
     }).then((res)=>{

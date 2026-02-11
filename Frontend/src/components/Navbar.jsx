@@ -9,7 +9,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState({});
 
   function getMe(){
-    axios.get("http://localhost:3000/api/auth/me").then((res)=>{
+    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
       setIsLoggedIn(res.data.success);
       setUserData(res.data.user);
     })
@@ -20,7 +20,7 @@ const Navbar = () => {
   
   function logout(){
     console.log("Logout btn clicked")
-    axios.post("http://localhost:3000/api/auth/logout").then((res)=>{
+    axios.post("https://mern-stack-note-app-so6x.onrender.com/api/auth/logout").then((res)=>{
       navigate("/");
       navigate(0);
     })
