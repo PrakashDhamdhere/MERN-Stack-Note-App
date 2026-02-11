@@ -6,7 +6,7 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({username: "prakash_d"});
+  const [userData, setUserData] = useState({});
 
   function getMe(){
     axios.get("http://localhost:3000/api/auth/me").then((res)=>{
@@ -17,18 +17,20 @@ const Navbar = () => {
 
   console.log(userData, isLoggedIn)
 
-  useEffect(()=>{
-    getMe();
-  }, [])
-
+  
   function logout(){
     console.log("Logout btn clicked")
     axios.post("http://localhost:3000/api/auth/logout").then((res)=>{
-      console.log(res.data)
-      navigate("/")
+      navigate("/");
+      navigate(0);
     })
   }
 
+
+  useEffect(()=>{
+    getMe();
+  }, [])
+  
   return (
     <nav className='px-7 w-full h-16 bg-zinc-700 flex items-center justify-between'>
         <div className='flex items-center gap-5'> 
