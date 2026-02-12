@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <div className='w-full h-screen flex items-center justify-center'>
-        <div className='w-1/4 mb-20'>
+        <div className='w-full lg:w-1/4 mb-20 px-5'>
             <form onSubmit={(e)=>submitHandler(e)} className=' flex flex-col gap-4 px-4 py-5 rounded-md bg-zinc-800'>
               <h1 className='text-3xl font-semibold text-center'>Login</h1>
               <input value={email} onChange={(e)=>setEmail(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter email' type="email" />

@@ -2,20 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = ({ userData, isLoggedIn}) => {
 
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({});
-
-  function getMe(){
-    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
-      setIsLoggedIn(res.data.success);
-      setUserData(res.data.user);
-    })
-  }
-
-  console.log(userData, isLoggedIn)
 
   
   function logout(){
@@ -25,11 +14,6 @@ const Navbar = () => {
       navigate(0);
     })
   }
-
-
-  useEffect(()=>{
-    getMe();
-  }, [])
   
   return (
     <nav className='px-7 w-full h-16 bg-zinc-700 flex items-center justify-between'>

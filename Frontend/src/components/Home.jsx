@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Navbar from './Navbar';
 
-const Home = () => {
+const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
 
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
@@ -10,9 +10,19 @@ const Home = () => {
   const [update, setUpdate] = useState(false);
   const [updateNoteID, setUpdateNoteID] = useState("");
 
-  console.log("HEllo")
 
   function fetchNotes(){
+
+    if(!isLoggedIn){
+      const localNotes = JSON.parse(localStorage.getItem("notes"))
+      setNotes(localNotes);
+      if(!localNotes){
+        setNotes([]);
+      }
+      setLocalStorageNotes(notes);
+      return
+    }
+
     axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`)
     .then((res)=>{
       setNotes(res.data.notes);
@@ -21,6 +31,15 @@ const Home = () => {
 
   function handleSubmin(e){
     e.preventDefault();
+
+    if(!isLoggedIn){
+      setNotes([...notes, {title: title, description: description}])
+      localStorage.setItem("notes", JSON.stringify([...notes, {title, description}]));
+      fetchNotes()
+      setDescription("");
+      setTitle("");
+      return
+    }
     
     axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/notes`, {
       title,
@@ -33,7 +52,14 @@ const Home = () => {
     })
   }
 
-  function handleDelete(id){
+  function handleDelete(id, idx){
+
+    if(!isLoggedIn){
+      localStorage.setItem("notes", JSON.stringify(notes.filter((val, index)=> index != idx)))
+      fetchNotes();
+      return
+    }
+
     let check = confirm("Are you sure you want to delete this note?");
     if(check){
       axios.delete(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
@@ -43,7 +69,16 @@ const Home = () => {
     }
   }
 
-  function handleEdit(id){
+  function handleEdit(id, idx){
+
+    if(!isLoggedIn){
+      setTitle(notes[idx].title)
+      setDescription(notes[idx].description)
+      setUpdate(true);
+      setUpdateNoteID(idx);
+      return
+    }
+
     axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
       const note = res.data.note;
       setTitle(note.title);
@@ -53,6 +88,18 @@ const Home = () => {
     })
   }
   function handleUpdate(){
+
+    if(!isLoggedIn){
+      // setNotes(...notes, notes[updateNoteID].description = description)
+      localStorage.setItem("notes", JSON.stringify(notes.map((obj, idx)=> idx == updateNoteID ? {...obj, description:description} : obj)))
+      fetchNotes();
+      setUpdateNoteID("")
+      setUpdate(false);
+      setTitle("");
+      setDescription("");
+      return
+    }
+
     axios.patch(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${updateNoteID}`, {
       title,
       description
@@ -74,7 +121,7 @@ const Home = () => {
 
   return (
     <div className='w-full min-h-screen bg-zinc-900 pb-5'>
-      <Navbar />
+      <Navbar userData={userData} isLoggedIn={isLoggedIn} />
       <div className='w-fit mx-auto mt-10'>
         <div>
           <form onSubmit={(e)=>{handleSubmin(e)}} className='w-full flex flex-col items-center gap-2 mb-12 px-2' >
@@ -96,10 +143,10 @@ const Home = () => {
                 <p className='text-zinc-400 text-xl font-semibold my-1'>{val.description}</p>
               </div>
               <div className='flex justify-between gap-4'>
-                <button onClick={()=>handleEdit(val._id)}>
+                <button onClick={()=>handleEdit(val._id, idx)}>
                   <i className="ri-pencil-line text-xl  text-zinc-400 hover:text-zinc-100"></i>
                 </button>
-                <button onClick={()=>handleDelete(val._id)}>
+                <button onClick={()=>handleDelete(val._id, idx)}>
                   <i className="ri-close-line text-xl text-zinc-400 hover:text-zinc-100"></i>
                 </button>
               </div>

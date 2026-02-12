@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({localStorageNotes}) => {
 
   const navigat = useNavigate();
 
@@ -27,7 +27,7 @@ const Register = () => {
 
   return (
     <div className='w-full h-screen flex items-center justify-center'>
-        <div className='w-1/4 mb-20'>
+        <div className='w-full lg:w-1/4 mb-20 px-5'>
             <form onSubmit={submitHandler} className=' flex flex-col gap-4 px-4 py-5 rounded-md bg-zinc-800'>
               <h1 className='text-3xl font-semibold text-center'>Register</h1>
               <input value={username} onChange={(e)=>setUsername(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter username' type="text" />
