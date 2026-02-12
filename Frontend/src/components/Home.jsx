@@ -23,9 +23,14 @@ const Home = () => {
   function fetchNotes(){
 
     if(!isLoggedIn){
-     const localNotes = JSON.parse(localStorage.getItem("notes"))
-      setNotes(localNotes);
+     try{
+      const localNotes = JSON.parse(localStorage.getItem("notes"))
+     console.log(localNotes)
+      localNotes && setNotes(localNotes);
       return   
+     } catch(err){
+      console.log(err.message);
+     }
     }
 
     axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`).then((res)=>{
