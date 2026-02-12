@@ -10,27 +10,17 @@ const App = () => {
 
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({});
   const [localStorageNotes, setLocalStorageNotes] = useState([]);
-
-  function getMe(){
-    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
-      setIsLoggedIn(res.data.success);
-      setUserData(res.data.user);
-    })
-  }
+  
+  
 
   console.log(localStorageNotes);
 
-  useEffect(()=>{
-    getMe();
-  }, [])
 
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home userData={userData} isLoggedIn={isLoggedIn} setLocalStorageNotes={setLocalStorageNotes} />} />
+        <Route path='/' element={<Home setLocalStorageNotes={setLocalStorageNotes} />} />
         <Route path='/register' element={<Register localStorageNotes={localStorageNotes} />} />
         <Route path='/login' element={<Login />} />
       </Routes>

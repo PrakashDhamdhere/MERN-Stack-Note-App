@@ -12,7 +12,8 @@ const Register = ({localStorageNotes}) => {
 
   function submitHandler(e){
     e.preventDefault()
-    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/auth/register`, {
+    localStorage.setItem("notes", JSON.stringify([]));
+    axios.post(`http://localhost:3000/api/auth/register`, {
       username,
       email,
       password
@@ -33,7 +34,7 @@ const Register = ({localStorageNotes}) => {
               <input value={username} onChange={(e)=>setUsername(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter username' type="text" />
               <input value={email} onChange={(e)=>setEmail(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter email' type="email" />
               <input value={password} onChange={(e)=>setPassword(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter password' type="password" />
-              <input className='px-3 py-1 bg-blue-600 hover:bg-blue-500 cursor-pointer text-xl font-semibold rounded-md' type="submit" value="Login" />
+              <input className='px-3 py-1 bg-blue-600 hover:bg-blue-500 cursor-pointer text-xl font-semibold rounded-md' type="submit" value="Register" />
               <h3 className='text-center text-zinc-300'>Already have an account? <Link to="/login" className='underline text-blue-500 hover:text-blue-400'>Login</Link></h3>
             </form>
         </div>

@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Navbar from './Navbar';
 
-const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
+const Home = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({});
+  function getMe(){
+    axios.get("http://localhost:3000/api/auth/me").then((res)=>{
+      setIsLoggedIn(res.data.success);
+      setUserData(res.data.user);
+    })
+  }
+
 
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
@@ -10,23 +20,19 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
   const [update, setUpdate] = useState(false);
   const [updateNoteID, setUpdateNoteID] = useState("");
 
-
   function fetchNotes(){
 
     if(!isLoggedIn){
-      const localNotes = JSON.parse(localStorage.getItem("notes"))
+     const localNotes = JSON.parse(localStorage.getItem("notes"))
       setNotes(localNotes);
-      if(!localNotes){
-        setNotes([]);
-      }
-      setLocalStorageNotes(notes);
-      return
+      return   
     }
 
-    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`)
-    .then((res)=>{
-      setNotes(res.data.notes);
+    axios.get(`http://localhost:3000/api/notes`).then((res)=>{
+        setNotes(res.data.notes);
     })
+
+    
   }
 
   function handleSubmin(e){
@@ -41,7 +47,7 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
       return
     }
     
-    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/notes`, {
+    axios.post(`http://localhost:3000/api/notes`, {
       title,
       description
     }).then((res)=>{
@@ -62,7 +68,7 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
 
     let check = confirm("Are you sure you want to delete this note?");
     if(check){
-      axios.delete(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
+      axios.delete(`http://localhost:3000/api/notes/${id}`).then((res)=>{
         console.log(res.data.message);
         fetchNotes();
       })
@@ -79,7 +85,7 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
       return
     }
 
-    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
+    axios.get(`http://localhost:3000/api/notes/${id}`).then((res)=>{
       const note = res.data.note;
       setTitle(note.title);
       setDescription(note.description);
@@ -100,7 +106,7 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
       return
     }
 
-    axios.patch(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${updateNoteID}`, {
+    axios.patch(`http://localhost:3000/api/notes/${updateNoteID}`, {
       title,
       description
     }).then((res)=>{
@@ -114,8 +120,9 @@ const Home = ({ userData, isLoggedIn, setLocalStorageNotes}) => {
   }
 
   useEffect(()=>{
+    getMe();
     fetchNotes();
-  },[])
+  },[isLoggedIn])
 
 
 
