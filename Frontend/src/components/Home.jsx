@@ -7,7 +7,7 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
   function getMe(){
-    axios.get("http://localhost:3000/api/auth/me").then((res)=>{
+    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
       setIsLoggedIn(res.data.success);
       setUserData(res.data.user);
     })
@@ -28,7 +28,7 @@ const Home = () => {
       return   
     }
 
-    axios.get(`http://localhost:3000/api/notes`).then((res)=>{
+    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`).then((res)=>{
         setNotes(res.data.notes);
     })
 
@@ -47,7 +47,7 @@ const Home = () => {
       return
     }
     
-    axios.post(`http://localhost:3000/api/notes`, {
+    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/notes`, {
       title,
       description
     }).then((res)=>{
@@ -68,7 +68,7 @@ const Home = () => {
 
     let check = confirm("Are you sure you want to delete this note?");
     if(check){
-      axios.delete(`http://localhost:3000/api/notes/${id}`).then((res)=>{
+      axios.delete(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
         console.log(res.data.message);
         fetchNotes();
       })
@@ -85,7 +85,7 @@ const Home = () => {
       return
     }
 
-    axios.get(`http://localhost:3000/api/notes/${id}`).then((res)=>{
+    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
       const note = res.data.note;
       setTitle(note.title);
       setDescription(note.description);
@@ -106,7 +106,7 @@ const Home = () => {
       return
     }
 
-    axios.patch(`http://localhost:3000/api/notes/${updateNoteID}`, {
+    axios.patch(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${updateNoteID}`, {
       title,
       description
     }).then((res)=>{

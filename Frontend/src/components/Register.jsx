@@ -13,7 +13,7 @@ const Register = ({localStorageNotes}) => {
   function submitHandler(e){
     e.preventDefault()
     localStorage.setItem("notes", JSON.stringify([]));
-    axios.post(`http://localhost:3000/api/auth/register`, {
+    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/auth/register`, {
       username,
       email,
       password
