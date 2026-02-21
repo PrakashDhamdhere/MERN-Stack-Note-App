@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '../utils/Axois'
 import Navbar from './Navbar';
 
 const Home = () => {
@@ -7,7 +7,7 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
   function getMe(){
-    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
+    axios.get("/api/auth/me").then((res)=>{
       setIsLoggedIn(res.data.success);
       setUserData(res.data.user);
     })
@@ -33,7 +33,7 @@ const Home = () => {
      }
     }
 
-    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes`).then((res)=>{
+    axios.get(`/api/notes`).then((res)=>{
         setNotes(res.data.notes);
     })
 
@@ -52,7 +52,7 @@ const Home = () => {
       return
     }
     
-    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/notes`, {
+    axios.post(`/api/notes`, {
       title,
       description
     }).then((res)=>{
@@ -73,7 +73,7 @@ const Home = () => {
 
     let check = confirm("Are you sure you want to delete this note?");
     if(check){
-      axios.delete(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
+      axios.delete(`/api/notes/${id}`).then((res)=>{
         console.log(res.data.message);
         fetchNotes();
       })
@@ -90,7 +90,7 @@ const Home = () => {
       return
     }
 
-    axios.get(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${id}`).then((res)=>{
+    axios.get(`/api/notes/${id}`).then((res)=>{
       const note = res.data.note;
       setTitle(note.title);
       setDescription(note.description);
@@ -111,7 +111,7 @@ const Home = () => {
       return
     }
 
-    axios.patch(`https://mern-stack-note-app-so6x.onrender.com/api/notes/${updateNoteID}`, {
+    axios.patch(`/api/notes/${updateNoteID}`, {
       title,
       description
     }).then((res)=>{
@@ -132,7 +132,7 @@ const Home = () => {
 
 
   return (
-    <div className='w-full min-h-screen bg-zinc-900 pb-5'>
+    <div className='w-full max-w-400 mx-auto min-h-screen bg-zinc-900 pb-5'>
       <Navbar userData={userData} isLoggedIn={isLoggedIn} />
       <div className='w-fit mx-auto mt-10'>
         <div>

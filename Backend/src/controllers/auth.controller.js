@@ -20,6 +20,9 @@ async function registerUser(req, res){
     if(user){
         return res.status(409).json(user.email == email ? "email already exist" : "username already exist");
     }
+    if(user){
+        return res.status(409).json(user.email == username ? "username already exist" : "username already exist");
+    }
 
     bcrypt.genSalt(12, function(err, salt) {
         bcrypt.hash(password, salt, async function(err, hash) {
@@ -62,7 +65,7 @@ async function loginUser(req, res){
 
     if(!user){
         return res.status(404).json({
-            message: "username/email is wrong"
+            message: "email/username or password is wrong"
         })
     }
 
@@ -72,7 +75,7 @@ async function loginUser(req, res){
         }
         if(!result){
             return res.status(404).json({
-                message: "password is wrong"
+                message: "email/username or password is wrong"
             })
         }
         if(result){

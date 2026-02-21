@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react'
+import axios from '../utils/Axois';
+import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = ({localStorageNotes}) => {
@@ -9,11 +9,17 @@ const Register = ({localStorageNotes}) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("")
+  const [statues, setStatues] = useState({
+    statuesCode: 0,
+    statuesMsg: ""
+  });
+
+  const errmsg = useRef(null);
 
   function submitHandler(e){
     e.preventDefault()
     localStorage.setItem("notes", JSON.stringify([]));
-    axios.post(`https://mern-stack-note-app-so6x.onrender.com/api/auth/register`, {
+    axios.post(`/api/auth/register`, {
       username,
       email,
       password
@@ -23,6 +29,13 @@ const Register = ({localStorageNotes}) => {
       setEmail("")
       setPassword("")
       navigat("/");
+    }).catch((err)=>{
+      console.log(err.response)
+      setStatues({
+        statuesCode: err.statues,
+        statuesMsg: err.response.data
+      })
+      errmsg.current.className = "text-red-500 text-right block"
     })
   }
 
@@ -34,6 +47,7 @@ const Register = ({localStorageNotes}) => {
               <input value={username} onChange={(e)=>setUsername(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter username' type="text" />
               <input value={email} onChange={(e)=>setEmail(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter email' type="email" />
               <input value={password} onChange={(e)=>setPassword(e.target.value)} className='px-3 py-1 text-xl font-semibold border-2 border-zinc-500 rounded-md' placeholder='Enter password' type="password" />
+              {statues.statuesCode != 0 && <p ref={errmsg} className='text-red-500 text-right'>{statues.statuesMsg} <span onClick={()=>{errmsg.current.className = "hidden"}} className='ml-2 font-semibold cursor-pointer'>x</span></p>}
               <input className='px-3 py-1 bg-blue-600 hover:bg-blue-500 cursor-pointer text-xl font-semibold rounded-md' type="submit" value="Register" />
               <h3 className='text-center text-zinc-300'>Already have an account? <Link to="/login" className='underline text-blue-500 hover:text-blue-400'>Login</Link></h3>
             </form>

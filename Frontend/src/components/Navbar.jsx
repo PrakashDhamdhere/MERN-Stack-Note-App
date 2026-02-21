@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../utils/Axois';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,7 +8,7 @@ const Navbar = ({ userData }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   function getMe(){
-    axios.get("https://mern-stack-note-app-so6x.onrender.com/api/auth/me").then((res)=>{
+    axios.get("/api/auth/me").then((res)=>{
       setIsLoggedIn(res.data.success);
     })
   }
@@ -17,7 +17,7 @@ const Navbar = ({ userData }) => {
   
   function logout(){
     console.log("Logout btn clicked")
-    axios.post("https://mern-stack-note-app-so6x.onrender.com/api/auth/logout").then((res)=>{
+    axios.post("/api/auth/logout").then((res)=>{
       navigate("/");
       navigate(0);
     })
